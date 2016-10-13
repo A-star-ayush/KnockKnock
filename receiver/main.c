@@ -10,7 +10,7 @@
 #include "broadcast.h"
 
 void goodBye(){
-	notify("Bye");
+	notify("GoodBye");
 }
 
 int main(int argc, char const *argv[])
