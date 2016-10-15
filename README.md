@@ -8,3 +8,5 @@ existing file managers. For build v2.0, compatibility with ubuntu's deafult file
 File sharing could never been so simple. With KnockKnock, file transfer is only a right click away.
 
 Dependencies: gcc, nautilus-actions
+
+Installer: In progress
