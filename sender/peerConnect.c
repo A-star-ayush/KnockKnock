@@ -19,33 +19,12 @@ int establishConnection(int tcp_fd, int wait_time){
 	if(rt == 0) return -1;  // timed out
 	if(rt < 0) exit_on_error("establishConnection: poll");
 
-	int peer = accept(tcp_fd, NULL, NULL);
+	struct sockaddr_in padd;
+	int sz = sizeof(struct sockaddr_in);
+
+	int peer = accept(tcp_fd, aCast(&padd), &sz);
 	if(peer < 0) exit_on_error("establishConnection: accept");
 
 	return peer;
 
 }
-
-/*fd_set rfds;
-	FD_ZERO(&rfds);
-	FD_SET(tcp_fd, &rfds);
-	
-	int nfds = tcp_fd + 1;
-
-	struct timeval timeout;      
-    timeout.tv_sec = wait_time;
-    timeout.tv_usec = 0;
-
-	int rt = select(nfds, &rfds, NULL, NULL, &timeout);
-	if(rt < 0) exit_on_error("select");
-	if(rt == 0) return -1;
-
-	int peer = -1;
-
-	if(FD_ISSET(tcp_fd, &rfds)){
-		peer = accept(tcp_fd, NULL, NULL);
-		if(peer < 0) exit_on_error("accept");
-	}
-	
-	return peer;
-*/

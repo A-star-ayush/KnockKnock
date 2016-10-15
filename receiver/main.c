@@ -6,25 +6,31 @@
 #include <arpa/inet.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <errno.h>
 #include "utility.h"
 #include "broadcast.h"
 
+int finalstatus = 0;
 void goodBye(){
-	notify("GoodBye..");
+	if(finalstatus) notify("GoodBye");
+	else notify("\"Sorry, retry after a minute\"");
 }
 
 int main(int argc, char const *argv[])
 {	
+	// these configurations could be read from a config file as well
 	#define SRC_PORT 20001
 	#define WAIT_TIME 5
-	#define MAX_ROUNDS 5
+	#define MAX_ROUNDS 3
 	#define QLEN 5
+	#define WAIT_FOR_REPLY 5
+
 
 	int rt = atexit(goodBye);
 	if(rt!=0) exit_err("could not register atexit event");
 
 	int udp_fd = createSocket(0, AF_INET, SRC_PORT, INADDR_ANY, 0);
-	int peer = createSocket(1, AF_INET, SRC_PORT, INADDR_ANY, QLEN);
+	int peer = socket(AF_INET, SOCK_STREAM, 0);
 
 	struct sockaddr_in x;
 	int sz = sizeof(struct sockaddr_in);
@@ -40,17 +46,22 @@ int main(int argc, char const *argv[])
 		else { close(udp_fd); break; }
 		
 		if(rounds > MAX_ROUNDS){
-			notify("could not find a source");
+			close(udp_fd);
+			close(peer);
+			notify("\"could not find a source\"");
 			exit_err("max rounds crossed");
 		}
 	}
 
-	notify("made connection");
-	
+	getfiles(peer, WAIT_FOR_REPLY);
+
+	finalstatus = 1;
+
 	#undef SRC_PORT
 	#undef WAIT_TIME
 	#undef MAX_ROUNDS
 	#undef QLEN
-	
+	#undef WAIT_FOR_REPLY
+
 	return 0;
 }

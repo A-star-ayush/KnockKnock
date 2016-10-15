@@ -11,7 +11,7 @@
 #define BROADCST_ADDR "127.255.255.255"
 // change the broadcast address to 255.255.255.255 when done testing locally
 
-void send_broadcast(int lsoc, int destPort, char* msg)
+void send_broadcast(int lsoc, short destPort, char* msg)
 {
 	int broadcast = 1;
  	int rt = setsockopt(lsoc, SOL_SOCKET, SO_BROADCAST, &broadcast, sizeof(broadcast));

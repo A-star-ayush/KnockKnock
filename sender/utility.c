@@ -25,8 +25,8 @@ int createSocket(int type, int aFm, short pNum, int bAdd, int nListen){
 	if(type==1) { rt = listen(fd, nListen);
 				  if(rt==-1) exit_on_error("createSocket:listen"); }
 	
-	int state = 1;
- 	setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &state, sizeof(int));
+	long state = 1;
+ 	if(setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &state, sizeof(int)) < 0) exit_on_error("setsockopt");
 
 	return fd;
 }
@@ -34,5 +34,5 @@ int createSocket(int type, int aFm, short pNum, int bAdd, int nListen){
 void notify(char* str){
 	char arg[100] = { "notify-send " };
 	int rt = system(strncat(arg, str, 88));
-	if(rt < 0) exit_on_error("notify: send");
+	if(rt < 0) exit_on_error("notify-send");
 }

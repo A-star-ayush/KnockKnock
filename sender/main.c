@@ -7,17 +7,21 @@
 #include "broadcast.h"
 #include "peerConnect.h"
 
+
+int finalstatus = 0;
 void goodBye(){
-	notify("GoodBye");
+	if(finalstatus) notify("GoodBye");
+	else notify("Sorry");
 }
 
 int main(int argc, char *argv[])
 {
 	#define SRC_PORT 20000
 	#define DST_PORT 20001
-	#define MAX_ROUNDS 5
+	#define MAX_ROUNDS 3
 	#define WAIT_TIME 5
 	#define QLEN 5
+	#define WAIT_FOR_REPLY 5
 
 	int rt = atexit(goodBye);
 	if(rt!=0) exit_err("could not register atexit event");
@@ -27,7 +31,7 @@ int main(int argc, char *argv[])
 	int peer = 0;
 	
 	while(1){
-		static int rounds = 0;
+		static int rounds = 1;
 		send_broadcast(udp_fd, DST_PORT, "KnockKnock");
 		peer = establishConnection(tcp_fd, WAIT_TIME);
 		if(peer > 0) { close(udp_fd); break; }
@@ -35,18 +39,25 @@ int main(int argc, char *argv[])
 		if(rounds > MAX_ROUNDS){
 			close(udp_fd);
 			close(tcp_fd);
-			notify("could not find a receipent");
+			notify("\"could not find a receipent\"");
 			exit_err("max rounds crossed");
 		} 
 	}
 	
-	notify("made connection");
+	close(tcp_fd);  // we no more want to expect any more clients .. single client model (can multithread for multiple client)
+    
+	
+	sendfiles(peer, argv+1, WAIT_FOR_REPLY);	
+	close(peer);
 
+	finalstatus = 1;
+	
 	#undef SRC_PORT
 	#undef DST_PORT
 	#undef MAX_ROUNDS
 	#undef WAIT_TIME
 	#undef QLEN
+	#undef WAIT_FOR_REPLY
 
 	return 0;
 }

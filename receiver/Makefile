@@ -1,2 +1,2 @@
 all:
-	gcc *.c -o receiver
+	gcc -D_FILE_OFFSET_BITS=64 *.c -o receive
