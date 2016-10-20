@@ -6,9 +6,11 @@
 #include "utility.h"
 #include "broadcast.h"
 #include "peerConnect.h"
+#include "files.h"
 
 
 int finalstatus = 0;
+
 void goodBye(){
 	if(finalstatus) notify("GoodBye");
 	else notify("Sorry");
@@ -16,11 +18,13 @@ void goodBye(){
 
 int main(int argc, char *argv[])
 {
-	#define SRC_PORT 20000
-	#define DST_PORT 20001
+	// we choose the port numbers from the empheral range: 32768 - 61000 when last checked 
+										// cat /proc/sys/net/ipv4/ip_local_port_range
+	#define SRC_PORT 40000
+	#define DST_PORT 40001
 	#define MAX_ROUNDS 3
 	#define WAIT_TIME 5
-	#define QLEN 5
+	#define QLEN 1
 	#define WAIT_FOR_REPLY 5
 
 	int rt = atexit(goodBye);
@@ -46,7 +50,6 @@ int main(int argc, char *argv[])
 	
 	close(tcp_fd);  // we no more want to expect any more clients .. single client model (can multithread for multiple client)
     
-	
 	sendfiles(peer, argv+1, WAIT_FOR_REPLY);	
 	close(peer);
 

@@ -13,9 +13,13 @@ int createSocket(int type, int aFm, short pNum, int bAdd, int nListen){
 		int M, socType;
 		M = -(type==1);
 		socType = (SOCK_STREAM & M) | (SOCK_DGRAM & ~M);
-		fd = socket(aFm, socType, 0);
+		fd = socket(PF_INET, socType, 0);
 	}
 	if(fd==-1) exit_on_error("createSocket:socket");
+	long state = 1;
+ 	if(setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &state, sizeof(int)) < 0) exit_on_error("setsockopt");
+
+
 	bzero(&lAdd, sz);
 	lAdd.sin_family = aFm;
 	lAdd.sin_port = htons(pNum);
@@ -24,10 +28,6 @@ int createSocket(int type, int aFm, short pNum, int bAdd, int nListen){
 	if(rt==-1) exit_on_error("createSocket:bind");
 	if(type==1) { rt = listen(fd, nListen);
 				  if(rt==-1) exit_on_error("createSocket:listen"); }
-	
-	long state = 1;
- 	if(setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &state, sizeof(int)) < 0) exit_on_error("setsockopt");
-
 	
 	return fd;
 }

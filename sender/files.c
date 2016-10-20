@@ -11,6 +11,9 @@
 #include "files.h"
 #include "utility.h"
 
+#define CHNK_SIZE 512
+// can use Path MTUD to make a more accurate estimation of the MTU
+
 void sendfiles(int peer, char** files, int wait_time){
 	
 	{
@@ -63,11 +66,12 @@ void sendfiles(int peer, char** files, int wait_time){
 				int in = open(*files, O_RDONLY);
 				if(in < 0) exit_on_error("sendfiles: open_in");
 
-				sleep(1);  // give the peer sometime to parse the information
+				char msg[len+16] = "\"Transfering: ";
+				notify(strcat(strcat(msg, *file),"\"");
 
-				char buf[BUFSIZ]; 
+				char buf[CHNK_SIZE]; 
 				while(1){
-					rt = read(in, buf, BUFSIZ);
+					rt = read(in, buf, CHNK_SIZE);
 					if(rt < 0) exit_on_error("getfiles: read_in");
 					if(rt == 0) break;  // EOF has reached
 					rt = write(peer, buf, rt);
@@ -94,3 +98,5 @@ void sendfiles(int peer, char** files, int wait_time){
 	puts("Sn: GG");
 	sleep(1);
 }
+
+#undef CHNK_SIZE

@@ -77,6 +77,9 @@ void getfiles(int peer, int wait_time){
 			break;
 		}
 		
+		char msg[fname_len+14] = "\"Receiving: ";
+		notify(strcat(strcat(msg, *file),"\"");
+
 		long long nbytes = 0;
 		while(nbytes!=fsize){
 			char buf[BUFSIZ]; 
@@ -86,7 +89,6 @@ void getfiles(int peer, int wait_time){
 			nbytes += rt;
 			rt = write(out, buf, rt);
 			if(rt < 0) exit_on_error("getfiles: write_out");
-			// need not check for ==0 here since we are writing to a local file
 		}
 		
 		rt = write(peer, "GG", 3);

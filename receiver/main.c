@@ -9,6 +9,8 @@
 #include <errno.h>
 #include "utility.h"
 #include "broadcast.h"
+#include "files.h"
+#include "peerConnect.h"
 
 int finalstatus = 0;
 void goodBye(){
@@ -19,7 +21,7 @@ void goodBye(){
 int main(int argc, char const *argv[])
 {	
 	// these configurations could be read from a config file as well
-	#define SRC_PORT 20001
+	#define SRC_PORT 40001
 	#define WAIT_TIME 5
 	#define MAX_ROUNDS 3
 	#define QLEN 5
@@ -30,7 +32,7 @@ int main(int argc, char const *argv[])
 	if(rt!=0) exit_err("could not register atexit event");
 
 	int udp_fd = createSocket(0, AF_INET, SRC_PORT, INADDR_ANY, 0);
-	int peer = socket(AF_INET, SOCK_STREAM, 0);
+	int peer = socket(PF_INET, SOCK_STREAM, 0);
 
 	struct sockaddr_in x;
 	int sz = sizeof(struct sockaddr_in);
