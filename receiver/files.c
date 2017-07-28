@@ -77,8 +77,9 @@ void getfiles(int peer, int wait_time){
 			break;
 		}
 		
-		char msg[fname_len+14] = "\"Receiving: ";
-		notify(strcat(strcat(msg, *file),"\"");
+		char local_msg[fname_len+14];
+		strcpy(local_msg, "\"Receiving: ");
+		notify(strcat(strcat(local_msg, fname),"\""));
 
 		long long nbytes = 0;
 		while(nbytes!=fsize){

@@ -12,7 +12,6 @@
 #include "utility.h"
 
 #define CHNK_SIZE 512
-// can use Path MTUD to make a more accurate estimation of the MTU
 
 void sendfiles(int peer, char** files, int wait_time){
 	
@@ -21,15 +20,7 @@ void sendfiles(int peer, char** files, int wait_time){
    		ioctl(peer, FIONBIO, &val);  // enabling BLOCKING mode I/O
    	}
     int rt;
-/*
-   	struct timeval timeout;      
-    timeout.tv_sec = wait_time;
-    timeout.tv_usec = 0;
 
-
-    rt = setsockopt(peer, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(timeout));
-    if(rt < 0) exit_on_error("recv_broadcast: setsockopt");
-*/
 	while(*files){
         struct stat sb;
         int len = strlen(*files);
@@ -66,8 +57,9 @@ void sendfiles(int peer, char** files, int wait_time){
 				int in = open(*files, O_RDONLY);
 				if(in < 0) exit_on_error("sendfiles: open_in");
 
-				char msg[len+16] = "\"Transfering: ";
-				notify(strcat(strcat(msg, *file),"\"");
+				char msg[len+16];
+				strcpy(msg,"\"Transfering: ");
+				notify(strcat(strcat(msg, *files),"\""));
 
 				char buf[CHNK_SIZE]; 
 				while(1){

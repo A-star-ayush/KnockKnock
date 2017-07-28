@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <errno.h>
+#include <dirent.h>
 #include "utility.h"
 #include "broadcast.h"
 #include "files.h"
@@ -18,15 +19,17 @@ void goodBye(){
 	else notify("\"Sorry, retry after a minute\"");
 }
 
-int main(int argc, char const *argv[])
+int main(int argc, char *argv[])
 {	
 	// these configurations could be read from a config file as well
+	if(argc > 1)
+		chdir(argv[1]);
+	
 	#define SRC_PORT 40001
 	#define WAIT_TIME 5
 	#define MAX_ROUNDS 3
 	#define QLEN 5
 	#define WAIT_FOR_REPLY 5
-
 
 	int rt = atexit(goodBye);
 	if(rt!=0) exit_err("could not register atexit event");
