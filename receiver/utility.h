@@ -12,7 +12,7 @@
 
 #define aCast(x) (struct sockaddr*)x
 
-int createSocket(int type, int addressFamily, short portNum, int bindingAddress, int QLen);
+int createSocket(int type, int addressFamily, unsigned short portNum, int bindingAddress, int QLen);
 void notify(char* str);
 
 #endif

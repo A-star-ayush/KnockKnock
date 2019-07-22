@@ -19,7 +19,8 @@ void goodBye(){
 int main(int argc, char *argv[])
 {
 	// we choose the port numbers from the empheral range: 32768 - 61000 when last checked 
-										// cat /proc/sys/net/ipv4/ip_local_port_range
+	// cat /proc/sys/net/ipv4/ip_local_port_range
+	
 	#define SRC_PORT 40000
 	#define DST_PORT 40001
 	#define MAX_ROUNDS 3

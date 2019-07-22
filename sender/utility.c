@@ -6,7 +6,7 @@
 #include <strings.h>
 #include "utility.h"
 
-int createSocket(int type, int aFm, short pNum, int bAdd, int nListen){
+int createSocket(int type, int aFm, unsigned short pNum, int bAdd, int nListen){
 	struct sockaddr_in lAdd;
 	int fd, rt, sz = sizeof(struct sockaddr_in);
 	{

@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 	int peer = socket(PF_INET, SOCK_STREAM, 0);
 
 	struct sockaddr_in x;
-	int sz = sizeof(struct sockaddr_in);
+	unsigned int sz = sizeof(struct sockaddr_in);
 	rt = getsockname(udp_fd, aCast(&x), &sz);
 
 	struct sockaddr_in* padd;

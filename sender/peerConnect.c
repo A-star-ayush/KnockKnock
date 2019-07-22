@@ -20,7 +20,7 @@ int establishConnection(int tcp_fd, int wait_time){
 	if(rt < 0) exit_on_error("establishConnection: poll");
 
 	struct sockaddr_in padd;
-	int sz = sizeof(struct sockaddr_in);
+	unsigned int sz = sizeof(struct sockaddr_in);
 
 	int peer = accept(tcp_fd, aCast(&padd), &sz);
 	if(peer < 0) exit_on_error("establishConnection: accept");

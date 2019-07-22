@@ -11,7 +11,7 @@
 #define BROADCST_ADDR "127.255.255.255"
 // change the broadcast address to 127.255.255.255 to do testing locally
 
-void send_broadcast(int lsoc, short destPort, char* msg)
+void send_broadcast(int lsoc, unsigned short destPort, char* msg)
 {
 	
 	int broadcast = 1;

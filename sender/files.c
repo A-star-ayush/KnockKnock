@@ -6,7 +6,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include <sys/sendfile.h>
 #include <sys/ioctl.h>
 #include "files.h"
 #include "utility.h"
@@ -19,7 +18,8 @@ void sendfiles(int peer, char** files, int wait_time){
     	int val = 0;
    		ioctl(peer, FIONBIO, &val);  // enabling BLOCKING mode I/O
    	}
-    int rt;
+    	
+	int rt;
 
 	while(*files){
         struct stat sb;
