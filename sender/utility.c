@@ -34,7 +34,8 @@ int createSocket(int type, int aFm, unsigned short pNum, int bAdd, int nListen){
 }
 
 void notify(char* str){
-	char arg[100] = { "notify-send " };
-	int rt = system(strncat(arg, str, 88));
-	if(rt < 0) exit_on_error("notify-send");
+	puts(str);
+        // char arg[100] = { "notify-send " };
+	// int rt = system(strncat(arg, str, 88));
+	// if(rt < 0) exit_on_error("notify-send");
 }

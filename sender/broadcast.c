@@ -8,7 +8,7 @@
 #include "utility.h"
 #include "broadcast.h"
 
-#define BROADCST_ADDR "127.255.255.255"
+#define BROADCST_ADDR "255.255.255.255"
 // change the broadcast address to 127.255.255.255 to do testing locally
 
 void send_broadcast(int lsoc, unsigned short destPort, char* msg)
